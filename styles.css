@@ -435,3 +435,7 @@ h2{font-size:clamp(32px,3.6vw,52px)}
 .xc-mini li::before{width:20px;height:20px;font-size:11.5px}
 .xc-tags span{font-size:12.5px;padding:5px 10px}
 @media(max-width:1000px){.xg{grid-template-columns:1fr}}
+/* títulos: corte de texto (trazos más gruesos, menos contraste) para que se lean mejor */
+h1,h2,h3,.lg-t b,.cita blockquote,.tl-q blockquote,.tc blockquote,.op blockquote,.nota b,.dg b,.dir,.redes.grande .rd,.tk-dia b,.tk-hora,.days b,.bf legend{font-optical-sizing:none;font-variation-settings:"opsz" 16}
+h1,h2,h3{font-weight:600;letter-spacing:-.012em}
+h1 em,h2 em{font-weight:600;color:#2E2780}
