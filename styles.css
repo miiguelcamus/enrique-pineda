@@ -563,7 +563,7 @@ h1 em,h2 em{font-weight:600;color:#2E2780}
 .citas .est{font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:999px;background:#E3F6EC;color:#13784A}
 .citas li.pend .est{background:#FFF1D6;color:#8A5A00}
 .btn-c{height:36px;padding:0 14px;border-radius:999px;border:0;background:var(--marino);color:#fff;font:600 13.5px var(--b);cursor:pointer;transition:.25s}
-.citas li.ok .btn-c{display:none}
+.citas li.ok .btn-c{visibility:hidden}
 .citas li{grid-template-columns:64px 1fr auto auto 40px}
 .wa-i{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#E7F8EE;color:#1DA851}.wa-i svg{width:18px;height:18px}
 .ag{overflow-x:auto}
