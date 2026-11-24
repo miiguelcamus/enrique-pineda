@@ -1,7 +1,7 @@
 :root{
- --papel:#F3F4F9;--blanco:#FBFBFE;--marino:#1B1550;--marino2:#2A2370;--hielo:#DFE4F5;--luz:#9DB2FF;
- --tinta:#15123A;--tinta2:#4D4B6B;--linea:#DADDEB;
- --s:"Bodoni Moda",Georgia,serif;--b:"Figtree",system-ui,sans-serif;--ease:cubic-bezier(.2,.75,.2,1)
+ --papel:#EEF0F7;--blanco:#F8F9FD;--marino:#1B1550;--marino2:#2A2370;--hielo:#DFE4F5;--luz:#9DB2FF;
+ --tinta:#15123A;--tinta2:#3B3958;--linea:#D3D7E8;
+ --s:"Source Serif 4",Georgia,serif;--b:"Figtree",system-ui,sans-serif;--ease:cubic-bezier(.2,.75,.2,1)
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{overflow-x:clip;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -364,4 +364,64 @@ h2{font-size:clamp(42px,5.4vw,76px)}
  .tl-q{padding:20px}.tl-q blockquote{font-size:19px}
  .bono{flex-direction:column;align-items:flex-start;padding:24px}
  .xc{padding:26px}
+}
+
+/* ===== legibilidad y alturas más compactas ===== */
+body{background:radial-gradient(80% 50% at 100% 0%,rgba(157,178,255,.18),transparent 60%),radial-gradient(60% 40% at 0% 60%,rgba(200,190,255,.14),transparent 60%),var(--papel);background-attachment:fixed}
+h1,h2,h3{font-weight:600;letter-spacing:-.025em;line-height:1.04}
+h1 em,h2 em{font-weight:500}
+h2{font-size:clamp(32px,3.6vw,52px)}
+.lead{font-size:clamp(16.5px,1.3vw,18.5px)}
+.hero{padding:118px 0 48px}
+.hero h1{font-size:clamp(40px,4.9vw,70px);margin-bottom:18px}
+.hero .lead{margin-bottom:26px}
+.nota{margin-top:24px}
+.hfig .eco{max-width:500px;margin-left:auto}
+.cita{bottom:-24px}
+.estado{margin-bottom:18px}
+.datos{padding:0 0 10px}
+.dg>div{padding:20px 24px}
+.dg b{font-size:clamp(28px,2.8vw,40px)}
+.sec{padding:68px 0}
+.sh{margin-bottom:32px}
+.kick{margin-bottom:14px}
+.xc{padding:28px}
+.xc-k{padding-bottom:22px}
+.xc h3{font-size:clamp(24px,2.3vw,32px)}
+.xc-mini{margin-top:20px}.xc-go{margin-top:20px}
+.tc{padding:24px}
+.tc-n{margin-bottom:18px}
+.tc h3{font-size:25px}
+.tc blockquote{margin-top:16px;padding-top:14px;font-size:16px}
+.op{padding:22px}
+.op blockquote{font-size:18px}
+.cierre{padding:76px 0}
+.cierre h2{font-size:clamp(34px,4.4vw,62px);margin-bottom:14px}
+.cierre p{margin-bottom:22px}
+.ph{padding:128px 0 30px}
+.ph h1{font-size:clamp(40px,5vw,72px);margin-bottom:14px}
+.tl-i{padding:30px 0;gap:32px}
+.tl-t h2{font-size:clamp(28px,2.8vw,40px);margin-bottom:10px}
+.tl-t>p:not(.tl-k){font-size:17px}
+.tl-q{padding:22px 24px}
+.tl-q blockquote{font-size:19.5px}
+.tl-v .eco{max-width:380px}
+.bono{padding:22px 26px}
+.redes.grande{margin-bottom:44px}
+.redes.grande .rd{gap:20px;padding:18px;font-size:22px}
+.mapbox{height:420px}
+.dir{font-size:clamp(26px,2.6vw,34px)}
+.hours li{padding:9px 0}
+.bf fieldset{padding:26px;margin-bottom:14px}
+.bf legend{font-size:25px;margin-bottom:16px}
+.pie{padding:44px 0 24px}
+.logo-full{width:160px;height:126px}
+.logo-full img{width:286px;left:-62px;top:-146px}
+.lg-t b{font-weight:600}
+@media(max-width:620px){
+ .hero{padding-top:100px}
+ .sec{padding:52px 0}
+ .ph{padding:104px 0 20px}
+ .tl-i{padding:24px 0}
+ .cierre{padding:60px 0}
 }
