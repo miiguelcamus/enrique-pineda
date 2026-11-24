@@ -1,6 +1,10 @@
 (function(){
 var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
 var H=window.EP_HOURS||[],RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+// parallax suave de los arcos del fondo
+var FA=$('.farcos');
+if(FA&&!RM){var tf=0;addEventListener('scroll',function(){if(tf)return;tf=requestAnimationFrame(function(){tf=0;FA.style.transform='translate3d(0,'+(-scrollY*.06).toFixed(1)+'px,0) rotate('+(scrollY*.004).toFixed(2)+'deg)'})},{passive:true})}
+
 
 // cabecera
 var top=$('.top'),VID=$$('.vidrio,.rd'),tkv=0;function sc(){if(top)top.classList.toggle('sc',scrollY>30);if(tkv)return;tkv=requestAnimationFrame(function(){tkv=0;var a=(135+scrollY*.12)%360;VID.forEach(function(v){v.style.setProperty('--ang',a+'deg')})})}sc();addEventListener('scroll',sc,{passive:true});
