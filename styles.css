@@ -42,7 +42,7 @@ h2{font-size:clamp(42px,5.4vw,76px)}
 .logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--tinta)}
 .logo.vidrio{padding:6px 18px 6px 6px;border-radius:999px}
 .lg-m{position:relative;flex:none;width:44px;height:44px;border-radius:50%;overflow:hidden;background:#140F48}
-.lg-m img{position:absolute;width:93px;max-width:none;height:auto;left:-24px;top:-29px}
+.lg-m img{position:absolute;width:104px;max-width:none;height:auto;left:-30px;top:-45px}
 .lg-t b{display:block;font:600 17px/1.05 var(--s)}
 .lg-t small{display:block;font-size:12px;color:var(--tinta2);margin-top:2px}
 .nav.vidrio{display:flex;gap:2px;margin-left:auto;padding:5px;border-radius:999px}
@@ -306,7 +306,7 @@ h2{font-size:clamp(42px,5.4vw,76px)}
 
 /* ===== logo completo en el pie ===== */
 .logo-full{display:block;width:190px;height:150px;border-radius:22px;overflow:hidden;position:relative;background:#140F48}
-.logo-full img{position:absolute;width:420px;max-width:none;height:auto;left:-115px;top:-128px}
+.logo-full img{position:absolute;width:340px;max-width:none;height:auto;left:-73px;top:-173px}
 
 /* ===== portada: tarjetas hacia cada página ===== */
 .explora{background:var(--blanco);border-top:1px solid var(--linea)}
