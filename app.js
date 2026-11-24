@@ -3,7 +3,7 @@ var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){retu
 var H=window.EP_HOURS||[],RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // cabecera
-var top=$('.top'),VID=$$('.vidrio,.rd'),tkv=0;function sc(){top.classList.toggle('sc',scrollY>30);if(tkv)return;tkv=requestAnimationFrame(function(){tkv=0;var a=(135+scrollY*.12)%360;VID.forEach(function(v){v.style.setProperty('--ang',a+'deg')})})}sc();addEventListener('scroll',sc,{passive:true});
+var top=$('.top'),VID=$$('.vidrio,.rd'),tkv=0;function sc(){if(top)top.classList.toggle('sc',scrollY>30);if(tkv)return;tkv=requestAnimationFrame(function(){tkv=0;var a=(135+scrollY*.12)%360;VID.forEach(function(v){v.style.setProperty('--ang',a+'deg')})})}sc();addEventListener('scroll',sc,{passive:true});
 var bg=$('.burger'),mm=$('.mm');
 if(bg)bg.addEventListener('click',function(){var o=bg.getAttribute('aria-expanded')!=='true';bg.setAttribute('aria-expanded',o);mm.classList.toggle('on',o);mm.setAttribute('aria-hidden',!o);document.body.style.overflow=o?'hidden':'';sc()});
 $$('.mm a').forEach(function(a){a.addEventListener('click',function(){if(bg.getAttribute('aria-expanded')==='true')bg.click()})});
@@ -70,11 +70,29 @@ if(VD){
  addEventListener('scroll',pide2,{passive:true});addEventListener('resize',pide2);lee2();s2=o2;pinta2();
 }
 
-// monitor del hero: la diana recorre zonas despacio
+// monitor del hero: explora solo y, al pasar el ratón o el dedo, hace de sonda
 var m1=$('.hero .eco');
-if(m1&&!RM){var dd=$('[data-diana]',m1),pp=$('[data-eco-paso]',m1),tt=$('[data-eco-txt]',m1),Z=[[200,150,'Cervical','Buscamos de dónde viene'],[160,190,'Lumbar','Origen localizado'],[240,125,'Hombro','Vemos el tejido por dentro'],[185,225,'Rodilla','Tratamiento a tu medida']],zi=0;
- dd.setAttribute('transform','translate(200 150)');
- setInterval(function(){zi=(zi+1)%Z.length;var z=Z[zi];dd.setAttribute('transform','translate('+z[0]+' '+z[1]+')');pp.textContent=z[2];tt.textContent=z[3]},3200)}
+if(m1){var pan=$('.eco-pan',m1),svgE=$('svg',pan),dd=$('[data-diana]',m1),lupa=$('[data-lupa]',m1),barr=$('.eco-barrido',m1),pp=$('[data-eco-paso]',m1),tt=$('[data-eco-txt]',m1);
+ var Z=[[200,150,'Cervical','Buscamos de dónde viene'],[160,190,'Lumbar','Origen localizado'],[240,125,'Hombro','Vemos el tejido por dentro'],[185,225,'Rodilla','Tratamiento a tu medida']],zi=0,manual=false,tm=0;
+ function capa(y){return y<115?'Piel y grasa':y<170?'Músculo':y<228?'Tendón y fascia':'Hueso'}
+ function pon(x,y){dd.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+')');lupa.setAttribute('cx',x.toFixed(1));lupa.setAttribute('cy',y.toFixed(1))}
+ if(!RM)setInterval(function(){if(manual)return;zi=(zi+1)%Z.length;var z=Z[zi];pon(z[0],z[1]);pp.textContent=z[2];tt.textContent=z[3]},3200);
+ function mueve(e){var r=svgE.getBoundingClientRect(),sx=400/r.width,sy=300/r.height,x=(e.clientX-r.left)*sx,y=(e.clientY-r.top)*sy;
+  var dx=x-200,dy=Math.max(20,y-12),ang=Math.atan2(dx,dy),max=29*Math.PI/180;ang=Math.max(-max,Math.min(max,ang));
+  var dist=Math.min(Math.hypot(dx,dy),288),px=200+Math.sin(ang)*dist,py=12+Math.cos(ang)*dist;
+  manual=true;m1.classList.add('manual');clearTimeout(tm);pon(px,py);barr.style.transform='rotate('+(-ang*180/Math.PI).toFixed(1)+'deg)';
+  pp.textContent='Explorando';tt.textContent=capa(py)}
+ function suelta(){clearTimeout(tm);tm=setTimeout(function(){manual=false;m1.classList.remove('manual');barr.style.transform=''},1800)}
+ pan.addEventListener('pointermove',mueve);pan.addEventListener('pointerdown',mueve);pan.addEventListener('pointerleave',suelta);pan.addEventListener('pointerup',suelta);pan.addEventListener('pointercancel',suelta)}
+
+// demo del panel: pestañas, confirmar citas, buscar pacientes
+var PN=$('.pn');
+if(PN){
+ var hoy=$('[data-hoy]');if(hoy){var tx=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});hoy.textContent=tx.charAt(0).toUpperCase()+tx.slice(1)}
+ $$('[data-tab]').forEach(function(b){b.addEventListener('click',function(){$$('[data-tab]').forEach(function(x){x.classList.toggle('on',x===b)});$$('[data-p]').forEach(function(s){s.classList.toggle('on',s.dataset.p===b.dataset.tab)})})});
+ $$('[data-conf]').forEach(function(b){b.addEventListener('click',function(){var li=b.closest('li');if(li.classList.contains('ok'))return;li.classList.remove('pend');li.classList.add('ok');$('.est',li).textContent='Confirmada';b.textContent='Confirmada ✓'})});
+ var bus=$('[data-bus]');if(bus)bus.addEventListener('input',function(){var q=bus.value.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');$$('.pt tbody tr').forEach(function(tr){tr.style.display=tr.textContent.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').indexOf(q)>-1?'':'none'})});
+}
 
 // galería: flechas y arrastre
 var gal=$('[data-gal]');
