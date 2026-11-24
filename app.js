@@ -41,6 +41,35 @@ if(HS){
  function pide(){lee();if(!corre){corre=true;requestAnimationFrame(bucle)}}
  addEventListener('scroll',pide,{passive:true});addEventListener('resize',pide);lee();sp=obj;dibuja();
 }
+// primera sesión como un vídeo: todo avanza con el scroll, suavizado
+var VD=$('[data-vid]');
+if(VD){
+ var lis=$$('[data-vp]',VD),scs=$$('[data-sc]',VD),N=lis.length,arc=$('[data-varc]',VD),num=$('[data-vnum]',VD),vtxt=$('[data-vtxt]',VD),dia=$('.sc-eco [data-diana]',VD),tel=$('[data-tel]',VD);
+ var o2=0,s2=0,run=false;
+ function cl(v){return Math.max(0,Math.min(1,v))}
+ function lee2(){var r=VD.getBoundingClientRect(),tot=r.height-innerHeight;o2=cl(-r.top/Math.max(1,tot))}
+ function pinta2(){
+  var f=s2*N;arc.style.strokeDashoffset=(119.4*(1-s2)).toFixed(2);num.textContent=Math.min(N,Math.floor(f)+1);
+  for(var k=0;k<N;k++){
+   var d=f-k-.5,o=cl(1-Math.max(0,Math.abs(d)-.32)*3.4);if(k===0&&f<.5)o=1;if(k===N-1&&f>N-.5)o=1;
+   var y=-Math.sign(d)*Math.max(0,Math.abs(d)-.32)*80;
+   lis[k].style.opacity=o.toFixed(3);lis[k].style.transform='translateY('+y.toFixed(1)+'px)';lis[k].style.visibility=o<.01?'hidden':'visible';
+   var sc=scs[k];sc.style.opacity=o.toFixed(3);sc.style.visibility=o<.01?'hidden':'visible';
+   sc.style.transform='translateY('+(y*1.4).toFixed(1)+'px) scale('+(.94+.06*o).toFixed(3)+') rotate('+(d*-3*(1-o)).toFixed(2)+'deg)';
+   var t=cl(f-k);
+   $$('[data-at]',sc).forEach(function(el){el.classList.toggle('on',t>=+el.dataset.at)});
+  }
+  // ecografía: la diana busca y se fija en el origen
+  var te=cl(f-1),x=120+te*90+Math.sin(te*9)*28*(1-te),y=110+te*70+Math.cos(te*7)*22*(1-te);
+  dia.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+')');
+  vtxt.textContent=te>.75?'Origen localizado':'Buscando el origen…';
+  tel.textContent=cl(f-4)>.4?'en llamada · 00:'+('0'+Math.floor(cl(f-4)*40)).slice(-2):'llamando…';
+ }
+ function bucle2(){var d=o2-s2;s2+=d*(RM?1:.07);if(Math.abs(d)<.0004)s2=o2;pinta2();if(s2!==o2)requestAnimationFrame(bucle2);else run=false}
+ function pide2(){lee2();if(!run){run=true;requestAnimationFrame(bucle2)}}
+ addEventListener('scroll',pide2,{passive:true});addEventListener('resize',pide2);lee2();s2=o2;pinta2();
+}
+
 // monitor del hero: la diana recorre zonas despacio
 var m1=$('.hero .eco');
 if(m1&&!RM){var dd=$('[data-diana]',m1),pp=$('[data-eco-paso]',m1),tt=$('[data-eco-txt]',m1),Z=[[200,150,'Cervical','Buscamos de dónde viene'],[160,190,'Lumbar','Origen localizado'],[240,125,'Hombro','Vemos el tejido por dentro'],[185,225,'Rodilla','Tratamiento a tu medida']],zi=0;

@@ -439,3 +439,80 @@ h2{font-size:clamp(32px,3.6vw,52px)}
 h1,h2,h3,.lg-t b,.cita blockquote,.tl-q blockquote,.tc blockquote,.op blockquote,.nota b,.dg b,.dir,.redes.grande .rd,.tk-dia b,.tk-hora,.days b,.bf legend{font-optical-sizing:none;font-variation-settings:"opsz" 16}
 h1,h2,h3{font-weight:600;letter-spacing:-.012em}
 h1 em,h2 em{font-weight:600;color:#2E2780}
+
+/* ===== primera sesión como un vídeo que avanza con el scroll ===== */
+.vid{position:relative;height:560vh}
+.vd-stage{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center}
+.vd-g{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding-top:50px}
+.vd-t{position:relative}
+.vd-prog{position:relative;width:56px;height:56px;margin-bottom:22px;display:flex;align-items:center;justify-content:center;font-family:var(--s)}
+.vd-prog svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.vd-prog circle{fill:none;stroke:var(--linea);stroke-width:3}
+.vd-prog .vd-arc{stroke:var(--marino);stroke-linecap:round;stroke-dasharray:119.4;stroke-dashoffset:119.4}
+.vd-prog b{font-size:22px;font-weight:600}.vd-prog span{font-size:13px;color:var(--tinta2);margin-top:6px}
+.vd-pasos{list-style:none;position:relative;min-height:380px}
+.vd-pasos li{position:absolute;inset:0 0 auto 0;will-change:transform,opacity}
+.vd-pasos h2{font-size:clamp(32px,3.4vw,50px);margin-bottom:12px}
+.vd-pasos p:not(.tl-k){font-size:17.5px;color:var(--tinta2);max-width:28em}
+.vd-pasos blockquote{margin-top:20px;padding:16px 20px;border-radius:16px;background:var(--blanco);box-shadow:inset 3px 0 0 var(--marino),0 20px 30px -28px rgba(21,18,58,.5);font:italic 600 18px/1.4 var(--s);font-variation-settings:"opsz" 16;max-width:30em}
+.vd-pasos cite{display:block;font:500 13px/1 var(--b);font-style:normal;color:var(--tinta2);margin-top:8px}
+.vd-v{position:relative;height:min(520px,68vh)}
+.esc{position:absolute;inset:0;margin:auto;width:min(440px,100%);height:fit-content;max-height:100%;will-change:transform,opacity}
+.sc-ej{position:absolute;right:14px;top:-12px;padding:4px 10px;border-radius:999px;background:var(--blanco);box-shadow:inset 0 0 0 1px var(--linea);font-size:11.5px;font-weight:600;color:var(--tinta2)}
+[data-at]{opacity:0;transform:translateY(12px) scale(.98);transition:opacity .45s var(--ease),transform .55s var(--ease)}
+[data-at].on{opacity:1;transform:none}
+/* escena 1: conversación */
+.sc-chat{padding:20px;border-radius:28px;background:var(--blanco);box-shadow:inset 0 0 0 1px var(--linea),0 40px 70px -40px rgba(21,18,58,.5);display:flex;flex-direction:column;gap:10px}
+.ph-top{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--linea);margin-bottom:6px}
+.ph-av{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--marino);color:#fff;font:600 14px/1 var(--s)}
+.ph-top b{display:block;font-size:15px}.ph-top small{color:var(--tinta2);font-size:12.5px}
+.bub{max-width:82%;padding:11px 15px;border-radius:18px;font-size:15px;line-height:1.4}
+.bub.tu{align-self:flex-end;background:var(--marino);color:#fff;border-bottom-right-radius:5px}
+.bub.yo{align-self:flex-start;background:var(--papel);border-bottom-left-radius:5px}
+/* escena 2: ecografía */
+.sc-eco .eco{width:100%}
+/* escena 3: plan de la sesión */
+.sc-plan,.sc-ejer{padding:26px;border-radius:28px;background:var(--blanco);box-shadow:inset 0 0 0 1px var(--linea),0 40px 70px -40px rgba(21,18,58,.5)}
+.sc-h{font:600 24px/1.1 var(--s);font-variation-settings:"opsz" 16;margin-bottom:18px}
+.pl{display:grid;grid-template-columns:1fr 30px;grid-template-rows:auto auto;gap:8px 12px;align-items:center;padding:14px 0;border-top:1px solid var(--linea)}
+.pl span{font-weight:600}
+.pl i{grid-column:1;height:6px;border-radius:6px;background:var(--hielo);overflow:hidden}
+.pl i b{display:block;height:100%;width:0;background:var(--marino);transition:width .8s var(--ease)}
+.pl.on i b{width:100%}
+.pl em{grid-column:2;grid-row:1/3;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;font-style:normal;color:#fff;background:var(--linea);transition:background .4s .5s}
+.pl.on em{background:#22A06B}
+/* escena 4: ejercicios */
+.sem{display:flex;gap:8px;margin-bottom:16px}
+.sem span{flex:1;position:relative;display:grid;place-items:center;height:52px;border-radius:14px;background:var(--papel);font-weight:700}
+.sem i{position:absolute;right:4px;top:3px;font-style:normal;font-size:11px;color:#22A06B}
+.sem span.on{background:var(--marino);color:#fff}
+.ej{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-radius:14px;background:var(--papel);margin-top:8px}
+.ej b{font-weight:600}.ej small{color:var(--tinta2)}
+/* escena 5: llamada */
+.tel{margin:auto;width:290px;padding:34px 22px 24px;border-radius:44px;background:linear-gradient(170deg,#241C6E,#130E42);color:#fff;text-align:center;box-shadow:0 0 0 8px #0d0a2e,0 50px 80px -40px rgba(21,18,58,.8);display:flex;flex-direction:column;align-items:center;gap:6px}
+.tel-ring{position:relative;width:92px;height:92px;margin-bottom:14px}
+.tel-ring span{position:absolute;inset:0;display:grid;place-items:center;border-radius:50%;background:#fff;color:var(--marino);font:600 28px/1 var(--s)}
+.tel-ring i{position:absolute;inset:0;border-radius:50%;border:2px solid var(--luz);animation:onda 2s ease-out infinite}
+.tel-ring i+i{animation-delay:1s}
+@keyframes onda{to{transform:scale(1.7);opacity:0}}
+.tel b{font-size:19px}.tel small{color:rgba(255,255,255,.65);margin-bottom:16px}
+.tel .bub{text-align:left;max-width:90%}
+.tel .bub.yo{background:rgba(255,255,255,.12);color:#fff;align-self:flex-start}
+.tel .bub.tu{background:var(--luz);color:var(--marino);align-self:flex-end}
+@media(max-width:1000px){
+ .vid{height:520vh}
+ .vd-g{grid-template-columns:1fr;gap:14px;padding-top:86px;align-content:center}
+ .vd-v{order:-1;height:42vh}
+ .esc{transform-origin:center;width:min(360px,100%)}
+ .vd-prog{display:none}
+ .vd-pasos{min-height:300px}
+ .vd-pasos h2{font-size:clamp(26px,7vw,40px)}
+ .vd-pasos p:not(.tl-k){font-size:15.5px}
+ .vd-pasos blockquote{margin-top:12px;padding:12px 14px;font-size:15.5px}
+ .sc-chat,.sc-plan,.sc-ejer{padding:16px;border-radius:22px}
+ .bub{font-size:13.5px;padding:9px 12px}
+ .tel{width:230px;padding:24px 16px 18px}.tel-ring{width:70px;height:70px}
+ .sc-h{font-size:20px;margin-bottom:10px}
+ .pl{padding:10px 0}.sem span{height:42px}.ej{padding:10px 12px}
+}
+@media(prefers-reduced-motion:reduce){.vid{height:auto}.vd-stage{position:relative;height:auto;padding:60px 0}.vd-pasos li,.esc{position:relative;opacity:1!important}[data-at]{opacity:1;transform:none}}
