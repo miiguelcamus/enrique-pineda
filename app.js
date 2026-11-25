@@ -94,7 +94,44 @@ var PN=$('.pn');
 if(PN){
  var hoy=$('[data-hoy]');if(hoy){var tx=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});hoy.textContent=tx.charAt(0).toUpperCase()+tx.slice(1)}
  $$('[data-tab]').forEach(function(b){b.addEventListener('click',function(){$$('[data-tab]').forEach(function(x){x.classList.toggle('on',x===b)});$$('[data-p]').forEach(function(s){s.classList.toggle('on',s.dataset.p===b.dataset.tab)})})});
- $$('[data-conf]').forEach(function(b){b.addEventListener('click',function(){var li=b.closest('li');if(li.classList.contains('ok'))return;li.classList.remove('pend');li.classList.add('ok');$('.est',li).textContent='Confirmada';b.textContent='Confirmada ✓'})});
+ var citas=$('[data-citas]'),kHoy=$('[data-k-hoy]'),kPend=$('[data-k-pend]'),kSem=$('[data-k-sem]');
+ function recuenta(){var li=$$('li',citas);kHoy.textContent=li.length;kPend.textContent=li.filter(function(x){return x.classList.contains('pend')}).length}
+ citas.addEventListener('click',function(e){var b=e.target.closest('[data-conf]');if(!b)return;var li=b.closest('li');if(li.classList.contains('ok'))return;li.classList.remove('pend');li.classList.add('ok');$('.est',li).textContent='Confirmada';b.textContent='Confirmada ✓';recuenta();aviso('Cita de '+$('b',li).textContent+' confirmada')});
+ // nueva cita desde el panel
+ var dlg=$('[data-dlg]'),nf=$('[data-nf]'),nh=$('[data-nh]'),nerr=$('[data-nerr]'),toast=$('[data-toast]'),tt;
+ for(var mm=540;mm<=1290;mm+=30){var o=document.createElement('option');o.value=mm;o.textContent=Math.floor(mm/60)+':'+('0'+mm%60).slice(-2);nh.appendChild(o)}
+ function ymd(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+ function aviso(t){toast.textContent=t;toast.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('on')},3200)}
+ function abre(){nf.reset();nerr.textContent='';var d=new Date();if(d.getDay()===6)d.setDate(d.getDate()+2);if(d.getDay()===0)d.setDate(d.getDate()+1);nf.d.value=ymd(d);nh.value='1020';
+  if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');setTimeout(function(){nf.n.focus()},50)}
+ function cierra(){if(dlg.close)dlg.close();else dlg.removeAttribute('open')}
+ $$('[data-nueva]').forEach(function(b){b.addEventListener('click',abre)});
+ $$('[data-cerrar]',dlg).forEach(function(b){b.addEventListener('click',cierra)});
+ dlg.addEventListener('click',function(e){if(e.target===dlg)cierra()});
+ var hoyD=new Date();hoyD.setHours(0,0,0,0);var lunes=new Date(hoyD);lunes.setDate(hoyD.getDate()-((hoyD.getDay()+6)%7));
+ // las citas de "hoy" del ejemplo van en la columna del día de hoy en la agenda
+ (function(){var c=(hoyD.getDay()+6)%7;if(c<1||c>4)return;var A=$('[data-col="0"]'),B=$('[data-col="'+c+'"]');if(!A||!B)return;var fa=[].slice.call(A.children),fb=[].slice.call(B.children);fa.forEach(function(x){B.appendChild(x)});fb.forEach(function(x){A.appendChild(x)})})();
+
+ nf.addEventListener('submit',function(e){e.preventDefault();
+  var n=nf.n.value.trim(),mot=nf.m.value,min=+nh.value,hora=nh.options[nh.selectedIndex].textContent,ok=nf.c.checked,dv=nf.d.value;
+  if(!n){nerr.textContent='Escribe el nombre del paciente.';nf.n.focus();return}
+  if(!dv){nerr.textContent='Elige el día de la cita.';return}
+  var p=dv.split('-'),d=new Date(+p[0],+p[1]-1,+p[2]),wd=d.getDay();
+  if(wd===0||wd===6){nerr.textContent='Los fines de semana la consulta está cerrada. Elige otro día.';return}
+  if(min>=(wd>=4?1200:1320)){nerr.textContent='Ese día se cierra a las '+(wd>=4?'20:00':'22:00')+'. Elige una hora antes.';return}
+  if(d<hoyD){nerr.textContent='Ese día ya ha pasado.';return}
+  var esHoy=d.getTime()===hoyD.getTime(),col=Math.round((d-lunes)/864e5),enSemana=col>=0&&col<5;
+  if(esHoy&&$$('li',citas).some(function(li){return +li.dataset.min===min})){nerr.textContent='Ya tienes una cita hoy a las '+hora+'.';return}
+  var nombre=n.split(/\s+/).map(function(w,i){return i?w.charAt(0).toUpperCase()+'.':w.charAt(0).toUpperCase()+w.slice(1)}).slice(0,2).join(' ');
+  if(esHoy){var li=document.createElement('li');li.className=(ok?'ok':'pend')+' nueva';li.dataset.min=min;
+   li.innerHTML='<time>'+hora+'</time><div><b></b><small></small></div><span class="est">'+(ok?'Confirmada':'Por confirmar')+'</span><button class="btn-c" data-conf>'+(ok?'Confirmada ✓':'Confirmar')+'</button><span class="wa-i">'+($('.wa-i',citas)?$('.wa-i',citas).innerHTML:'')+'</span>';
+   $('b',li).textContent=nombre;$('small',li).textContent=mot;
+   var antes=$$('li',citas).filter(function(x){return +x.dataset.min>min})[0];citas.insertBefore(li,antes||null);recuenta()}
+  if(enSemana){var c=$('[data-col="'+col+'"]');if(c){var i=document.createElement('i');i.className='nueva';i.style.setProperty('--t',(min/60-9).toFixed(2));i.style.setProperty('--d','1');i.innerHTML='<b>'+hora+'</b>';i.appendChild(document.createTextNode(nombre));c.appendChild(i);kSem.textContent=+kSem.textContent+1}}
+  var tb=$('[data-pacs]');if(tb){var tr=document.createElement('tr');tr.className='nueva';tr.innerHTML='<td><b></b></td><td></td><td></td><td>1</td>';$('b',tr).textContent=nombre;tr.children[1].textContent=mot;tr.children[2].textContent=esHoy?'Hoy':'Próxima: '+d.toLocaleDateString('es-ES',{day:'numeric',month:'short'});tb.insertBefore(tr,tb.firstChild)}
+  cierra();
+  aviso('Cita guardada: '+d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric'})+' a las '+hora+' · '+nombre);
+ });
  var bus=$('[data-bus]');if(bus)bus.addEventListener('input',function(){var q=bus.value.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');$$('.pt tbody tr').forEach(function(tr){tr.style.display=tr.textContent.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').indexOf(q)>-1?'':'none'})});
 }
 
